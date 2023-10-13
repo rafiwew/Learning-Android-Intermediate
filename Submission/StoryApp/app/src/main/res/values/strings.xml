@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">StoryApp</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
+    <string name="login_image">login_image</string>
+    <string name="login_signup">login_signup</string>
+    <string name="name">Nama</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
 </resources>
