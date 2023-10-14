@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.databinding.ActivityRegisterBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 
@@ -23,43 +24,54 @@ class RegisterActivity : AppCompatActivity() {
 
         with(binding) {
             signupButton.setOnClickListener {
-                val name = nameEditText.text.toString()
-                val email = emailEditText.text.toString()
-                val password = passwordEditText.text.toString()
-
                 when {
-                    name.isEmpty() -> {
+                    binding.nameEditText.text.toString().isEmpty() -> {
                         binding.nameEditText.error = "Masih kosong"
                     }
 
-                    email.isEmpty() -> {
+                    binding.emailEditText.text.toString().isEmpty() -> {
                         binding.emailEditText.error = "Masih kosong"
                     }
 
-                    password.isEmpty() -> {
+                    binding.passwordEditText.text.toString().isEmpty() -> {
                         binding.passwordEditText.error = "Masih kosong"
                     }
 
-                    password.length < 8 -> {
+                    binding.passwordEditText.text.toString().length < 8 -> {
                         binding.passwordEditText.error = "Password tidak boleh kurang dari 8 karakter"
                     }
 
-                    else -> viewModel.register(name, email, password)
-                }
-
-                viewModel.registerStatusResponse.observe(this@RegisterActivity) { isSuccess ->
-                    if (isSuccess) {
-                        showAlertDialog("Success", viewModel.messageResponse.value!!, "Login")
-                    } else {
-                        showAlertDialog("Failed", viewModel.messageResponse.value!!, "Close")
-                    }
-                }
-
-                viewModel.isLoading.observe(this@RegisterActivity) {
-                    showLoading(it)
+                    else -> register()
                 }
             }
         }
+    }
+
+    private fun register() {
+        val name = binding.nameEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
+
+        viewModel.register(name, email, password)
+            .observe(this@RegisterActivity) { result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultState.Loading -> {
+                            showLoading(true)
+                        }
+
+                        is ResultState.Success -> {
+                            showAlertDialog("Success", result.data.toString(), "Login")
+                            showLoading(false)
+                        }
+
+                        is ResultState.Error -> {
+                            showAlertDialog("Failed", result.error, "Close")
+                            showLoading(false)
+                        }
+                    }
+                }
+            }
     }
 
     private fun showAlertDialog(title: String, message: String, textButton: String) {
