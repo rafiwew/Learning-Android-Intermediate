@@ -1,4 +1,4 @@
-package com.piwew.storyapp.customview
+package com.piwew.storyapp.ui.customview
 
 import android.content.Context
 import android.text.Editable
