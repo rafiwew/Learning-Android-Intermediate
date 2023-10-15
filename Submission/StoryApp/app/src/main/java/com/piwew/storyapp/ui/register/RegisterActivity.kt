@@ -25,20 +25,20 @@ class RegisterActivity : AppCompatActivity() {
         with(binding) {
             signupButton.setOnClickListener {
                 when {
-                    binding.nameEditText.text.toString().isEmpty() -> {
-                        binding.nameEditText.error = "Masih kosong"
+                    binding.edRegisterName.text.toString().isEmpty() -> {
+                        binding.edRegisterName.error = "Masih kosong"
                     }
 
-                    binding.emailEditText.text.toString().isEmpty() -> {
-                        binding.emailEditText.error = "Masih kosong"
+                    binding.edRegisterEmail.text.toString().isEmpty() -> {
+                        binding.edRegisterEmail.error = "Masih kosong"
                     }
 
-                    binding.passwordEditText.text.toString().isEmpty() -> {
-                        binding.passwordEditText.error = "Masih kosong"
+                    binding.edRegisterPassword.text.toString().isEmpty() -> {
+                        binding.edRegisterPassword.error = "Masih kosong"
                     }
 
-                    binding.passwordEditText.text.toString().length < 8 -> {
-                        binding.passwordEditText.error = "Password tidak boleh kurang dari 8 karakter"
+                    binding.edRegisterPassword.text.toString().length < 8 -> {
+                        binding.edRegisterPassword.error = "Password tidak boleh kurang dari 8 karakter"
                     }
 
                     else -> register()
@@ -48,9 +48,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun register() {
-        val name = binding.nameEditText.text.toString()
-        val email = binding.emailEditText.text.toString()
-        val password = binding.passwordEditText.text.toString()
+        val name = binding.edRegisterName.text.toString()
+        val email = binding.edRegisterEmail.text.toString()
+        val password = binding.edRegisterPassword.text.toString()
 
         viewModel.register(name, email, password)
             .observe(this@RegisterActivity) { result ->
