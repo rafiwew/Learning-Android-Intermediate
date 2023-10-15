@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.piwew.storyapp.databinding.ActivityWelcomeBinding
+import com.piwew.storyapp.ui.login.LoginActivity
 import com.piwew.storyapp.ui.register.RegisterActivity
 
 class WelcomeActivity : AppCompatActivity() {

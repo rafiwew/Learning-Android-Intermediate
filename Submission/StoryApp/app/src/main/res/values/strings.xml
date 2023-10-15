@@ -10,4 +10,6 @@
     <string name="login_signup">login_signup</string>
     <string name="name">Nama</string>
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="logout">Keluar</string>
+    <string name="message_main_page">Selamat Belajar di Dicoding.</string>
 </resources>

@@ -5,11 +5,28 @@ import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.piwew.storyapp.data.api.response.ErrorResponse
 import com.piwew.storyapp.data.api.retrofit.ApiService
+import com.piwew.storyapp.data.pref.UserModel
+import com.piwew.storyapp.data.pref.UserPreference
+import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
 
 class UserRepository private constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val userPreference: UserPreference
 ) {
+
+    fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
+
+    suspend fun saveSession(user: UserModel) {
+        userPreference.saveSession(user)
+    }
+
+    suspend fun logout() {
+        userPreference.logout()
+    }
+
     fun register(username: String, email: String, password: String): LiveData<ResultState<Any>> {
         return liveData {
             emit(ResultState.Loading)
@@ -27,9 +44,12 @@ class UserRepository private constructor(
     companion object {
         @Volatile
         private var instance: UserRepository? = null
-        fun getInstance(apiService: ApiService): UserRepository =
+        fun getInstance(
+            apiService: ApiService,
+            userPreference: UserPreference
+        ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(apiService)
+                instance ?: UserRepository(apiService, userPreference)
             }.also { instance = it }
     }
 }
