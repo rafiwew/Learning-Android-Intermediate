@@ -2,7 +2,7 @@ package com.piwew.storyapp.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.piwew.storyapp.data.UserRepository
+import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.pref.UserModel
 import kotlinx.coroutines.launch
 

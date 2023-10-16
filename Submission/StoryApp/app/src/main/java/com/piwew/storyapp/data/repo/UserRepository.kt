@@ -1,8 +1,9 @@
-package com.piwew.storyapp.data
+package com.piwew.storyapp.data.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
+import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.ErrorResponse
 import com.piwew.storyapp.data.api.response.LoginResponse
 import com.piwew.storyapp.data.api.retrofit.ApiService
@@ -53,7 +54,6 @@ class UserRepository private constructor(
             errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
         }
     }
-
 
     companion object {
         @Volatile
