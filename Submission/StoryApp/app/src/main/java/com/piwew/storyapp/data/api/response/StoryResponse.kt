@@ -47,7 +47,7 @@ data class Story(
     val photoUrl: String,
 
     @field:SerializedName("createdAt")
-    val createdAt: String? = null,
+    val createdAt: String,
 
     @field:SerializedName("name")
     val name: String? = null,

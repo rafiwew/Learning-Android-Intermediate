@@ -11,6 +11,8 @@ import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.Story
 import com.piwew.storyapp.databinding.ActivityStoryDetailBinding
 import com.piwew.storyapp.ui.ViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class StoryDetailActivity : AppCompatActivity() {
 
@@ -52,6 +54,21 @@ class StoryDetailActivity : AppCompatActivity() {
             ivPhotoDetail.loadImage(story.photoUrl)
             tvNameDetail.text = story.name
             tvDescDetail.text = story.description
+            tvDateDetail.text = formatDateTime(story.createdAt)
+        }
+    }
+
+    private fun formatDateTime(iso8601DateTime: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputDate = SimpleDateFormat("d MMMM yyyy, HH:mm:ss", Locale.getDefault())
+
+        return try {
+            val date = inputFormat.parse(iso8601DateTime)
+            outputDate.format(date!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "There is an error: ${e.message}", Toast.LENGTH_SHORT).show()
+            "Invalid Date"
         }
     }
 
