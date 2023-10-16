@@ -32,7 +32,7 @@ class EmailEditText : AppCompatEditText {
 
             override fun afterTextChanged(s: Editable?) {
                 error = if (!isValidEmail(s.toString())) {
-                    "Email tidak valid"
+                    "Invalid email"
                 } else {
                     null
                 }
