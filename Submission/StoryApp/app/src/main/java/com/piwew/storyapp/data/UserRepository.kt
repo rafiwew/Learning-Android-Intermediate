@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.piwew.storyapp.data.api.response.ErrorResponse
+import com.piwew.storyapp.data.api.response.LoginResponse
 import com.piwew.storyapp.data.api.retrofit.ApiService
 import com.piwew.storyapp.data.pref.UserModel
 import com.piwew.storyapp.data.pref.UserPreference
@@ -40,6 +41,19 @@ class UserRepository private constructor(
             }
         }
     }
+
+    fun login(email: String, password: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val successResponse = apiService.login(email, password)
+            emit(ResultState.Success(successResponse))
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, LoginResponse::class.java)
+            errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
+        }
+    }
+
 
     companion object {
         @Volatile

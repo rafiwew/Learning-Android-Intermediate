@@ -12,4 +12,6 @@
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
     <string name="logout">Keluar</string>
     <string name="message_main_page">Selamat Belajar di Dicoding.</string>
+    <string name="hello">Hello, %1$s!</string>
+    <string name="logo_dicoding">logo_dicoding</string>
 </resources>

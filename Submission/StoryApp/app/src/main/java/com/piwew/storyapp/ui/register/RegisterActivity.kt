@@ -1,5 +1,6 @@
 package com.piwew.storyapp.ui.register
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.databinding.ActivityRegisterBinding
 import com.piwew.storyapp.ui.ViewModelFactory
+import com.piwew.storyapp.ui.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -26,19 +28,19 @@ class RegisterActivity : AppCompatActivity() {
             signupButton.setOnClickListener {
                 when {
                     binding.edRegisterName.text.toString().isEmpty() -> {
-                        binding.edRegisterName.error = "Masih kosong"
+                        binding.edRegisterName.error = "Can not be empty"
                     }
 
                     binding.edRegisterEmail.text.toString().isEmpty() -> {
-                        binding.edRegisterEmail.error = "Masih kosong"
+                        binding.edRegisterEmail.error = "Can not be empty"
                     }
 
                     binding.edRegisterPassword.text.toString().isEmpty() -> {
-                        binding.edRegisterPassword.error = "Masih kosong"
+                        binding.edRegisterPassword.error = "Can not be empty"
                     }
 
                     binding.edRegisterPassword.text.toString().length < 8 -> {
-                        binding.edRegisterPassword.error = "Password tidak boleh kurang dari 8 karakter"
+                        binding.edRegisterPassword.error = "Password must not be less than 8 characters"
                     }
 
                     else -> register()
@@ -61,12 +63,17 @@ class RegisterActivity : AppCompatActivity() {
                         }
 
                         is ResultState.Success -> {
-                            showAlertDialog("Success", result.data.toString(), "Login")
+                            showAlertDialog(
+                                "Success",
+                                result.data.toString(),
+                                "Login",
+                                LoginActivity::class.java
+                            )
                             showLoading(false)
                         }
 
                         is ResultState.Error -> {
-                            showAlertDialog("Failed", result.error, "Close")
+                            showAlertDialog("Failed", result.error, "Try again")
                             showLoading(false)
                         }
                     }
@@ -74,11 +81,18 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    private fun showAlertDialog(title: String, message: String, textButton: String) {
-        AlertDialog.Builder(this@RegisterActivity).apply {
+    private fun showAlertDialog(
+        title: String,
+        message: String,
+        textButton: String,
+        targetActivity: Class<*>? = RegisterActivity::class.java
+    ) {
+        AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
             setPositiveButton(textButton) { _, _ ->
+                val intent = Intent(this@RegisterActivity, targetActivity)
+                startActivity(intent)
                 finish()
             }
             create()

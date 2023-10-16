@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.piwew.storyapp.R
 import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import com.piwew.storyapp.ui.WelcomeActivity
@@ -28,8 +29,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        nameAccount = intent.getStringExtra(name).toString()
+        binding.nameTextView.text = resources.getString(R.string.hello, nameAccount)
+
         binding.actionLogout.setOnClickListener {
             viewModel.logout()
         }
+    }
+
+    companion object {
+        const val name = "name"
+        var nameAccount = String()
     }
 }
