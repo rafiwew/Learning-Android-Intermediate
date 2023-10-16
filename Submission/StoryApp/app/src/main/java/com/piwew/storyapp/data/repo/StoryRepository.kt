@@ -22,6 +22,18 @@ class StoryRepository private constructor(
         }
     }
 
+    fun detailStory(id: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val successDetailStory = apiService.detailStory(id)
+            emit(ResultState.Success(successDetailStory))
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, StoryResponse::class.java)
+            errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: StoryRepository? = null

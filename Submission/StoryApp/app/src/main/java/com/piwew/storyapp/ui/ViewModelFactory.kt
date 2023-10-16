@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.repo.StoryRepository
 import com.piwew.storyapp.di.Injection
+import com.piwew.storyapp.ui.detail.StoryDetailViewModel
 import com.piwew.storyapp.ui.login.LoginViewModel
 import com.piwew.storyapp.ui.main.MainViewModel
 import com.piwew.storyapp.ui.register.RegisterViewModel
@@ -29,6 +30,10 @@ class ViewModelFactory private constructor(
 
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(userRepository, storyRepository) as T
+            }
+
+            modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
+                StoryDetailViewModel(storyRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

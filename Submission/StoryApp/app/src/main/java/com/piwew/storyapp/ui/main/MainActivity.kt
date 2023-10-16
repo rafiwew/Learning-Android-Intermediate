@@ -15,6 +15,7 @@ import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import com.piwew.storyapp.ui.WelcomeActivity
+import com.piwew.storyapp.ui.detail.StoryDetailActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,16 +43,18 @@ class MainActivity : AppCompatActivity() {
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> {
-
+                        showLoading(true)
                     }
 
                     is ResultState.Success -> {
                         showRecyclerView()
                         showViewModel(result.data.listStory)
+                        showLoading(false)
                     }
 
                     is ResultState.Error -> {
-
+                        showToast(result.error)
+                        showLoading(false)
                     }
                 }
             }
@@ -82,13 +85,15 @@ class MainActivity : AppCompatActivity() {
 
         mAdapter.setOnItemClickCallback(object : ListStoriesAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
-                showSelectedUser()
+                showSelectedUser(data)
             }
         })
     }
 
-    private fun showSelectedUser() {
-        Toast.makeText(this, "Selected", Toast.LENGTH_SHORT).show()
+    private fun showSelectedUser(stories: ListStoryItem) {
+        val intentToDetail = Intent(this@MainActivity, StoryDetailActivity::class.java)
+        intentToDetail.putExtra("STORY_ID", stories.id)
+        startActivity(intentToDetail)
     }
 
     private fun showViewModel(storiesItem: List<ListStoryItem>) {
@@ -98,5 +103,13 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.rvStories.visibility = View.INVISIBLE
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

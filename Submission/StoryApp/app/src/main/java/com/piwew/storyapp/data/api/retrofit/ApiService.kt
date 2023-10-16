@@ -3,10 +3,7 @@ package com.piwew.storyapp.data.api.retrofit
 import com.piwew.storyapp.data.api.response.LoginResponse
 import com.piwew.storyapp.data.api.response.RegisterResponse
 import com.piwew.storyapp.data.api.response.StoryResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @FormUrlEncoded
@@ -26,4 +23,9 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(): StoryResponse
+
+    @GET("stories/{id}")
+    suspend fun detailStory(
+        @Path("id") id: String
+    ): StoryResponse
 }
