@@ -29,13 +29,13 @@ class ListStoriesAdapter :
     class MyViewHolder(private val binding: ItemRowStoriesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(stories: ListStoryItem) {
-            binding.tvName.text = stories.name
-            binding.tvDescription.text = stories.description
+            binding.tvItemName.text = stories.name
+            binding.tvItemDescription.text = stories.description
             Glide.with(itemView.context)
                 .load(stories.photoUrl)
                 .fitCenter()
                 .skipMemoryCache(true)
-                .into(binding.ivPhoto)
+                .into(binding.ivItemPhoto)
         }
     }
 
