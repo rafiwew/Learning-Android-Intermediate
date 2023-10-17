@@ -13,6 +13,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresExtension
 import com.piwew.storyapp.databinding.ActivityAddStoryBinding
+import com.piwew.storyapp.helper.getImageUri
 
 class AddStoryActivity : AppCompatActivity() {
 
@@ -27,12 +28,12 @@ class AddStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.galleryButton.setOnClickListener { startGalleryOrOpenDocument() }
-        binding.cameraButton.setOnClickListener { }
+        binding.cameraButton.setOnClickListener { startCamera() }
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     private fun startGalleryOrOpenDocument() {
-        if (!isPhotoPickerAvailable()) {
+        if (isPhotoPickerAvailable()) {
             launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } else {
             Toast.makeText(
@@ -81,6 +82,19 @@ class AddStoryActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Open Document: No media selected", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun startCamera() {
+        currentImageUri = getImageUri(this)
+        launcherIntentCamera.launch(currentImageUri)
+    }
+
+    private val launcherIntentCamera = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        if (isSuccess) {
+            showImage()
         }
     }
 
