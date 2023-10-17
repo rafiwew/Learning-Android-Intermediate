@@ -54,7 +54,7 @@
             tools:text="Lorem ipsum dolor sit amet bior nuye ol uine hartam mane yute dolor sit amet Lorem ipsum dolor sit amet sit ipsum voper" />
 
         <TextView
-            android:id="@+id/tv_date_detail"
+            android:id="@+id/tv_detail_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

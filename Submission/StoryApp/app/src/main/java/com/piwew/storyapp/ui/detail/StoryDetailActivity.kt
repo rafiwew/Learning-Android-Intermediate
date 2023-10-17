@@ -51,10 +51,10 @@ class StoryDetailActivity : AppCompatActivity() {
 
     private fun showViewModel(story: Story) {
         with(binding) {
-            ivPhotoDetail.loadImage(story.photoUrl)
-            tvNameDetail.text = story.name
-            tvDescDetail.text = story.description
-            tvDateDetail.text = formatDateTime(story.createdAt)
+            ivDetailPhoto.loadImage(story.photoUrl)
+            tvDetailName.text = story.name
+            tvDetailDescription.text = story.description
+            tvDetailDate.text = formatDateTime(story.createdAt)
         }
     }
 
