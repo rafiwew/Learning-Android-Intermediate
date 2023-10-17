@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.story.CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.story.AddStoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.detail.StoryDetailActivity"
             android:exported="false" />

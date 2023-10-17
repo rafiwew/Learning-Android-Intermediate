@@ -15,4 +15,10 @@
     <string name="hello">Hello, %1$s!</string>
     <string name="logo_dicoding">logo_dicoding</string>
     <string name="photo">photo</string>
+    <string name="add_story">Add Story</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
+    <string name="description">Description of the image</string>
+    <string name="switch_camera">switch_camera</string>
 </resources>

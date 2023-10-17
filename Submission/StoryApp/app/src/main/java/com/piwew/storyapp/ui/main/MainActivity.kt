@@ -16,6 +16,7 @@ import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import com.piwew.storyapp.ui.WelcomeActivity
 import com.piwew.storyapp.ui.detail.StoryDetailActivity
+import com.piwew.storyapp.ui.story.AddStoryActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,6 +71,9 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_logout -> {
                 viewModel.logout()
+            }
+            R.id.action_add_story -> {
+                startActivity(Intent(this, AddStoryActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)
