@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.databinding.ItemRowStoriesBinding
 
@@ -34,6 +35,7 @@ class ListStoriesAdapter :
             Glide.with(itemView.context)
                 .load(stories.photoUrl)
                 .fitCenter()
+                .override(Target.SIZE_ORIGINAL)
                 .skipMemoryCache(true)
                 .into(binding.ivItemPhoto)
         }

@@ -3,11 +3,11 @@ package com.piwew.storyapp.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.piwew.storyapp.R
 import com.piwew.storyapp.data.ResultState
@@ -29,54 +29,67 @@ class MainActivity : AppCompatActivity() {
     private val mAdapter = ListStoriesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
+
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_logout -> {
+                    viewModel.logout()
+                    true
+                }
+
+                R.id.action_setting -> {
+                    startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        binding.fabAddStory.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    AddStoryActivity::class.java
+                )
+            )
+        }
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
-            }
-        }
+            } else {
+                viewModel.getStories().observe(this) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> {
+                                showLoading(true)
+                            }
 
-        viewModel.getStories().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> {
-                        showLoading(true)
-                    }
+                            is ResultState.Success -> {
+                                showViewModel(result.data.listStory)
+                                showLoading(false)
+                            }
 
-                    is ResultState.Success -> {
-                        showRecyclerView()
-                        showViewModel(result.data.listStory)
-                        showLoading(false)
-                    }
-
-                    is ResultState.Error -> {
-                        showToast(result.error)
-                        showLoading(false)
+                            is ResultState.Error -> {
+                                showToast(result.error)
+                                showLoading(false)
+                            }
+                        }
+                    } else {
+                        showToast(getString(R.string.empty_story))
                     }
                 }
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_logout -> {
-                viewModel.logout()
-            }
-            R.id.action_add_story -> {
-                startActivity(Intent(this, AddStoryActivity::class.java))
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        showRecyclerView()
     }
 
     private fun showRecyclerView() {

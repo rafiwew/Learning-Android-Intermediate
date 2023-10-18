@@ -1,18 +1,20 @@
 package com.piwew.storyapp.ui.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.piwew.storyapp.R
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.Story
 import com.piwew.storyapp.databinding.ActivityStoryDetailBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
+
 
 class StoryDetailActivity : AppCompatActivity() {
 
@@ -26,6 +28,10 @@ class StoryDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ivActionBack.setOnClickListener {
+            onSupportNavigateUp()
+        }
 
         storyId = intent.getStringExtra(STORY_ID).toString()
         viewModel.detailStory(storyId).observe(this) { result ->
@@ -45,8 +51,15 @@ class StoryDetailActivity : AppCompatActivity() {
                         showLoading(false)
                     }
                 }
+            } else {
+                showToast(getString(R.string.empty_detail_story))
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     private fun showViewModel(story: Story) {

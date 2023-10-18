@@ -10,6 +10,7 @@ import com.piwew.storyapp.ui.detail.StoryDetailViewModel
 import com.piwew.storyapp.ui.login.LoginViewModel
 import com.piwew.storyapp.ui.main.MainViewModel
 import com.piwew.storyapp.ui.register.RegisterViewModel
+import com.piwew.storyapp.ui.story.AddStoryViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor(
@@ -34,6 +35,10 @@ class ViewModelFactory private constructor(
 
             modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
                 StoryDetailViewModel(storyRepository) as T
+            }
+
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(storyRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

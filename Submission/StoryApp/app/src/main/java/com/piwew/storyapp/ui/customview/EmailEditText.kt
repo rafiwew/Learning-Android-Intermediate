@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
+import com.piwew.storyapp.R
 import java.util.regex.Pattern
 
 class EmailEditText : AppCompatEditText {
@@ -32,7 +33,7 @@ class EmailEditText : AppCompatEditText {
 
             override fun afterTextChanged(s: Editable?) {
                 error = if (!isValidEmail(s.toString())) {
-                    "Invalid email"
+                    context.getString(R.string.invalid_email)
                 } else {
                     null
                 }

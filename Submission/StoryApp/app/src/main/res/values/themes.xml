@@ -1,13 +1,111 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.StoryApp" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/redHigh</item>
+        <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="ToolbarTheme" parent="Widget.AppCompat.Toolbar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:itemBackground">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="AppTheme.ToolbarFont" parent="Base.Theme.StoryApp">
+        <!--This line changes the color of text in Toolbar-->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
+        <item name="textAllCaps">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="Base.Theme.StoryApp.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/redHigh</item>
     </style>
 
-    <style name="Theme.StoryApp" parent="Base.Theme.StoryApp" />
+    <style name="Theme.StoryApp" parent="Base.Theme.StoryApp">
+        <item name="windowNoTitle">false</item>
+        <item name="background">@color/redHigh</item>
+    </style>
+
+    <style name="TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="TextView.Large">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/shape_rectangle_rounded_grey</item>
+        <item name="android:padding">16dp</item>
+        <item name="endIconMode">password_toggle</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="EditText.Username">
+        <item name="android:drawableStart">@drawable/ic_baseline_person_24</item>
+        <item name="android:hint">Name</item>
+        <item name="android:inputType">textPersonName</item>
+    </style>
+
+    <style name="EditText.Person">
+        <item name="android:drawableStart">@drawable/ic_baseline_person_24</item>
+    </style>
+
+    <style name="EditText.Description">
+        <item name="android:drawableStart">@drawable/baseline_description_24</item>
+    </style>
+
+    <style name="EditText.Date">
+        <item name="android:drawableStart">@drawable/baseline_calendar_month_24</item>
+    </style>
+
+    <style name="EditText.Email">
+        <item name="android:drawableStart">@drawable/ic_baseline_email_24</item>
+        <item name="android:hint">Email</item>
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="EditText.Password">
+        <item name="android:drawableStart">@drawable/ic_baseline_lock_24</item>
+        <item name="android:hint">Password</item>
+        <item name="endIconMode">password_toggle</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/shape_rectangle_button_primary</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Button.Register">
+        <item name="android:text">Register</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="Button.Login">
+        <item name="android:text">Login</item>
+    </style>
+
+    <style name="Button.Start">
+        <item name="android:text">Get Started</item>
+    </style>
+
+    <style name="Theme.StoryApp.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/redHigh</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/dailysnaps_splash</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.StoryApp</item>
+    </style>
 </resources>

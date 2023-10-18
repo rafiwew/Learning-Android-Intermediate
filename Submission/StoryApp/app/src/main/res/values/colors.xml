@@ -3,4 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="navy">#2D3D4F</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorGrey">#F0F0F0</color>
+
+    <color name="redHigh">#DD4E51</color>
+    <color name="redNormal">#FC585C</color>
+    <color name="blackHigh">#000000</color>
+    <color name="blackNormal">#707070</color>
+    <color name="colorWhiteLow">#F7F7F7</color>
+    <color name="colorDark">#2F2E41</color>
 </resources>
