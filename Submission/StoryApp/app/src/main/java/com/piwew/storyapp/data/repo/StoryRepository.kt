@@ -4,8 +4,11 @@ import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.StoryResponse
+import com.piwew.storyapp.data.api.retrofit.ApiConfig
 import com.piwew.storyapp.data.api.retrofit.ApiService
 import com.piwew.storyapp.data.pref.UserPreference
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -20,8 +23,9 @@ class StoryRepository private constructor(
     fun getStories() = liveData {
         emit(ResultState.Loading)
         try {
-            userPreference.getSession()
-            val successGetStories = apiService.getStories()
+            val user = runBlocking { userPreference.getSession().first() }
+            val response = ApiConfig.getApiService(user.token)
+            val successGetStories = response.getStories()
             emit(ResultState.Success(successGetStories))
         } catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()
