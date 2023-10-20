@@ -96,7 +96,6 @@
     </style>
 
     <style name="Button.Login">
-        <item name="android:text">Login</item>
     </style>
 
     <style name="Button.Start">

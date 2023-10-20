@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Daily Snaps</string>
+    <string name="app_name">DailySnaps</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="welcome">Welcome to DailySnaps!</string>
@@ -25,7 +25,7 @@
     <string name="register_subtitle">Create an account first before sharing stories</string>
     <string name="sign_up">Don\'t have an account? Register</string>
     <string name="sign_in">Already have account? Login</string>
-    <string name="subtitle_welcome">Now, you can share your stories with Daily Snaps!</string>
+    <string name="subtitle_welcome">Now, you can share your stories with Daily Snaps</string>
     <string name="title_detail">Detail Story</string>
     <string name="title_add_story">Upload Story</string>
     <string name="detail_description">Description</string>
@@ -42,4 +42,14 @@
     <string name="empty_story">There isn\'t any story</string>
     <string name="empty_detail_story">There are no story details</string>
     <string name="invalid_email">Invalid Email</string>
+    <string name="success_title">Success</string>
+    <string name="failed_title">Failed</string>
+    <string name="logout_title">Log out</string>
+    <string name="logout_success">Log out successfully</string>
+    <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="yes_title">Yes</string>
+    <string name="no_title">No</string>
+    <string name="try_again">Try Again</string>
+    <string name="continue_title">Continue</string>
+    <string name="close_title">Close</string>
 </resources>

@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.piwew.storyapp.R
@@ -39,7 +40,18 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_logout -> {
-                    viewModel.logout()
+                    AlertDialog.Builder(this).apply {
+                        setTitle(getString(R.string.logout_title))
+                        setMessage(getString(R.string.logout_message))
+                        setPositiveButton(getString(R.string.yes_title)) { _, _ ->
+                            viewModel.logout()
+                            showToast(getString(R.string.logout_success))
+                        }
+                        setNegativeButton(getString(R.string.no_title)) { _, _ ->
+                        }
+                        create()
+                        show()
+                    }
                     true
                 }
 

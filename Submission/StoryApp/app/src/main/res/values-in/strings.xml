@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Daily Snaps</string>
+    <string name="app_name">DailySnaps</string>
     <string name="register">Daftar</string>
     <string name="login">Masuk</string>
     <string name="welcome">Welcome to DailySnaps!</string>
@@ -25,7 +25,7 @@
     <string name="register_subtitle">Buat akun terlebih dahulu ya!</string>
     <string name="sign_up">Belum punya akun? Daftar</string>
     <string name="sign_in">Sudah punya akun? Login</string>
-    <string name="subtitle_welcome">Kamu bisa berbagi cerita dengan Daily Snaps!</string>
+    <string name="subtitle_welcome">Kamu bisa berbagi cerita dengan Daily Snaps</string>
     <string name="title_detail">Detail Story</string>
     <string name="title_add_story">Unggah Story</string>
     <string name="detail_description">Deskripsi</string>
@@ -42,4 +42,14 @@
     <string name="empty_story">Tidak ada cerita apa pun</string>
     <string name="empty_detail_story">Tidak ada detail cerita</string>
     <string name="invalid_email">Email tidak valid</string>
+    <string name="success_title">Sukses</string>
+    <string name="failed_title">Gagal</string>
+    <string name="logout_title">Keluar</string>
+    <string name="logout_success">Berhasil keluar</string>
+    <string name="logout_message">Apakah kamu yakin ingin log out?</string>
+    <string name="yes_title">Ya</string>
+    <string name="no_title">Tidak</string>
+    <string name="try_again">Coba lagi</string>
+    <string name="continue_title">Lanjut</string>
+    <string name="close_title">Tutup</string>
 </resources>

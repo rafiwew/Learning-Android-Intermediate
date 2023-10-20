@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -70,11 +69,10 @@ class LoginActivity : AppCompatActivity() {
 
                     is ResultState.Success -> {
                         viewModel.saveSession(UserModel(email, result.data.loginResult.token))
-                        Log.d("TOKEN", "login: ${result.data.loginResult.token}")
                         showAlertDialog(
-                            "Success",
+                            getString(R.string.success_title),
                             result.data.message,
-                            "Continue",
+                            getString(R.string.continue_title),
                             MainActivity::class.java,
                             result.data.loginResult.name
                         )
@@ -82,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     is ResultState.Error -> {
-                        showAlertDialog("Failed", result.error, "Try again")
+                        showAlertDialog(getString(R.string.failed_title), result.error, getString(R.string.try_again))
                         showLoading(false)
                     }
                 }
@@ -124,16 +122,11 @@ class LoginActivity : AppCompatActivity() {
         }.start()
 
         val title = ObjectAnimator.ofFloat(binding.tvTitleLogin, View.ALPHA, 1f).setDuration(100)
-        val subtitle =
-            ObjectAnimator.ofFloat(binding.tvSubtitleLogin, View.ALPHA, 1f).setDuration(100)
-        val emailTextLayout =
-            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val emailEditText =
-            ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
-        val passwordTextLayout =
-            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val passwordEditText =
-            ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
+        val subtitle = ObjectAnimator.ofFloat(binding.tvSubtitleLogin, View.ALPHA, 1f).setDuration(100)
+        val emailTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val emailEditText = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
+        val passwordTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val passwordEditText = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
         val buttonLogin = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(500)
 
         AnimatorSet().apply {

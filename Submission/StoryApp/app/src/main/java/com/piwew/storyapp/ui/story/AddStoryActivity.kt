@@ -15,6 +15,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresExtension
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.piwew.storyapp.R
@@ -171,10 +172,18 @@ class AddStoryActivity : AppCompatActivity() {
                         }
 
                         is ResultState.Success -> {
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
+                            AlertDialog.Builder(this).apply {
+                                setTitle(getString(R.string.success_title))
+                                setMessage(result.data.message)
+                                setPositiveButton(getString(R.string.close_title)) { _, _ ->
+                                    val intent = Intent(this@AddStoryActivity, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                create()
+                                show()
+                            }
                             showLoading(false)
                         }
 

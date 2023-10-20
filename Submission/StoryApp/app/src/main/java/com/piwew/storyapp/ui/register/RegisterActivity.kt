@@ -72,16 +72,16 @@ class RegisterActivity : AppCompatActivity() {
 
                         is ResultState.Success -> {
                             showAlertDialog(
-                                "Success",
+                                getString(R.string.success_title),
                                 result.data.toString(),
-                                "Login",
+                                getString(R.string.login),
                                 LoginActivity::class.java
                             )
                             showLoading(false)
                         }
 
                         is ResultState.Error -> {
-                            showAlertDialog("Failed", result.error, "Try again")
+                            showAlertDialog(getString(R.string.failed_title), result.error, getString(R.string.try_again))
                             showLoading(false)
                         }
                     }

@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.StoryResponse
 import com.piwew.storyapp.data.api.retrofit.ApiConfig
-import com.piwew.storyapp.data.api.retrofit.ApiService
 import com.piwew.storyapp.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -17,15 +16,14 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository private constructor(
-    private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
     fun getStories() = liveData {
         emit(ResultState.Loading)
         try {
             val user = runBlocking { userPreference.getSession().first() }
-            val response = ApiConfig.getApiService(user.token)
-            val successGetStories = response.getStories()
+            val apiService = ApiConfig.getApiService(user.token)
+            val successGetStories = apiService.getStories()
             emit(ResultState.Success(successGetStories))
         } catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()
@@ -37,6 +35,8 @@ class StoryRepository private constructor(
     fun detailStory(id: String) = liveData {
         emit(ResultState.Loading)
         try {
+            val user = runBlocking { userPreference.getSession().first() }
+            val apiService = ApiConfig.getApiService(user.token)
             val successDetailStory = apiService.detailStory(id)
             emit(ResultState.Success(successDetailStory))
         } catch (e: HttpException) {
@@ -56,6 +56,8 @@ class StoryRepository private constructor(
             requestImageFile
         )
         try {
+            val user = runBlocking { userPreference.getSession().first() }
+            val apiService = ApiConfig.getApiService(user.token)
             val successUploadStory = apiService.uploadStory(multipartBody, requestBody)
             emit(ResultState.Success(successUploadStory))
         } catch (e: HttpException) {
@@ -69,11 +71,10 @@ class StoryRepository private constructor(
         @Volatile
         private var instance: StoryRepository? = null
         fun getInstance(
-            apiService: ApiService,
             userPreference: UserPreference
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference)
+                instance ?: StoryRepository(userPreference)
             }.also { instance = it }
     }
 }
