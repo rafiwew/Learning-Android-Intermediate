@@ -34,7 +34,7 @@ class UserRepository private constructor(
             emit(ResultState.Loading)
             try {
                 val successResponse = apiService.register(username, email, password).message
-                emit(ResultState.Success(successResponse!!))
+                emit(ResultState.Success(successResponse))
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)

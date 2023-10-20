@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    private val mAdapter = ListStoriesAdapter()
+    private val mAdapter = ListStoriesAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()

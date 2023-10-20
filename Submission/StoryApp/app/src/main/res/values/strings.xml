@@ -52,4 +52,13 @@
     <string name="try_again">Try Again</string>
     <string name="continue_title">Continue</string>
     <string name="close_title">Close</string>
+    <string name="upload_time">Upload Time</string>
+    <string name="image">Image</string>
+    <string name="illustration_welcome">Illustration Welcome</string>
+    <string name="illustration_register">Illustration register</string>
+    <string name="illustration_login">Illustration login</string>
+    <string name="just_now">Just Now</string>
+    <string name="minutes_ago">%d minutes ago</string>
+    <string name="hours_ago">%d hours ago</string>
+    <string name="invalid_date">Invalid Date</string>
 </resources>

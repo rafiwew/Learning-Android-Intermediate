@@ -52,4 +52,13 @@
     <string name="try_again">Coba lagi</string>
     <string name="continue_title">Lanjut</string>
     <string name="close_title">Tutup</string>
+    <string name="upload_time">Waktu unggah</string>
+    <string name="image">Gambar</string>
+    <string name="illustration_welcome">Ilustrasi selamat datang</string>
+    <string name="illustration_register">Ilustrasi daftar</string>
+    <string name="illustration_login">Ilustrasi masuk</string>
+    <string name="just_now">Baru saja</string>
+    <string name="minutes_ago">%d menit yang lalu</string>
+    <string name="hours_ago">%d jam yang lalu</string>
+    <string name="invalid_date">Tanggal tidak valid</string>
 </resources>

@@ -23,7 +23,7 @@
             android:id="@+id/iv_item_photo"
             android:layout_width="match_parent"
             android:layout_height="194dp"
-            android:contentDescription="@string/photo"
+            android:contentDescription="@string/image"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -41,6 +41,32 @@
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="@color/colorWhiteLow"
                 tools:text="Muhammad Rafi" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="@string/upload_time"
+                    android:src="@drawable/baseline_access_time_24"
+                    card_view:tint="@color/colorGrey" />
+
+                <TextView
+                    android:id="@+id/tv_item_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/montserrat"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="11sp"
+                    tools:text="8 jam yang lalu" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_item_description"
