@@ -78,7 +78,7 @@ class ListStoriesAdapter(private val context: Context) :
                     } else {
                         val diffInHours = TimeUnit.MINUTES.toHours(diffInMinutes)
                         if (diffInHours < 24) {
-                            return context.getString(R.string.minutes_ago, diffInHours)
+                            return context.getString(R.string.hours_ago, diffInHours)
                         } else {
                             val outputDate = SimpleDateFormat("d MMMM yyyy, HH:mm:ss", Locale.getDefault())
                             return outputDate.format(dateIndonesia)
