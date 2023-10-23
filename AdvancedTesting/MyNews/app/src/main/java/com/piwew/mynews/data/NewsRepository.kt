@@ -8,6 +8,7 @@ import com.piwew.mynews.BuildConfig
 import com.piwew.mynews.data.local.entity.NewsEntity
 import com.piwew.mynews.data.local.room.NewsDao
 import com.piwew.mynews.data.remote.retrofit.ApiService
+import com.piwew.mynews.utils.wrapEspressoIdlingResource
 
 class NewsRepository(
     private val apiService: ApiService,
@@ -15,21 +16,23 @@ class NewsRepository(
 ) {
     fun getHeadlineNews(): LiveData<Result<List<NewsEntity>>> = liveData {
         emit(Result.Loading)
-        try {
-            val response = apiService.getNews(BuildConfig.NEWS_API_KEY)
-            val articles = response.articles
-            val newsList = articles.map { article ->
-                NewsEntity(
-                    article.title,
-                    article.publishedAt,
-                    article.urlToImage,
-                    article.url
-                )
+        wrapEspressoIdlingResource {
+            try {
+                val response = apiService.getNews(BuildConfig.NEWS_API_KEY)
+                val articles = response.articles
+                val newsList = articles.map { article ->
+                    NewsEntity(
+                        article.title,
+                        article.publishedAt,
+                        article.urlToImage,
+                        article.url
+                    )
+                }
+                emit(Result.Success(newsList))
+            } catch (e: Exception) {
+                Log.d("NewsRepository", "getHeadlineNews: ${e.message.toString()} ")
+                emit(Result.Error(e.message.toString()))
             }
-            emit(Result.Success(newsList))
-        } catch (e: Exception) {
-            Log.d("NewsRepository", "getHeadlineNews: ${e.message.toString()} ")
-            emit(Result.Error(e.message.toString()))
         }
     }
 
