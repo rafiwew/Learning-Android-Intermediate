@@ -12,6 +12,8 @@ import com.piwew.mynews.ui.list.NewsAdapter.MyViewHolder
 import com.piwew.mynews.R
 import com.piwew.mynews.data.local.entity.NewsEntity
 import com.piwew.mynews.databinding.ItemNewsBinding
+import com.piwew.mynews.utils.DateFormatter
+import java.util.TimeZone
 
 class NewsAdapter(private val onItemClick: (NewsEntity) -> Unit) :
     ListAdapter<NewsEntity, MyViewHolder>(
@@ -36,7 +38,7 @@ class NewsAdapter(private val onItemClick: (NewsEntity) -> Unit) :
     ) {
         fun bind(news: NewsEntity) {
             binding.tvItemTitle.text = news.title
-            binding.tvItemPublishedDate.text = news.publishedAt
+            binding.tvItemPublishedDate.text = DateFormatter.formatDate(news.publishedAt, TimeZone.getDefault().id)
             Glide.with(itemView.context)
                 .load(news.urlToImage)
                 .apply(
