@@ -2,11 +2,11 @@ package com.piwew.mynews.ui.list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.piwew.mynews.data.NewsRepository
 import com.piwew.mynews.data.Result
 import com.piwew.mynews.data.local.entity.NewsEntity
 import com.piwew.mynews.utils.DataDummy
+import com.piwew.mynews.utils.getOrAwaitValue
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -35,17 +35,27 @@ class NewsViewModelTest {
 
     @Test
     fun `when Get HeadlineNews should not null and return success`() {
-        val observer = Observer<Result<List<NewsEntity>>> {}
-        try {
-            val expectedNews = MutableLiveData<Result<List<NewsEntity>>>()
-            expectedNews.value = Result.Success(dummyNews)
-            `when`(newsRepository.getHeadlineNews()).thenReturn(expectedNews)
-            val actualNews = newsViewModel.getHeadlineNews().observeForever(observer)
+        val expectedNews = MutableLiveData<Result<List<NewsEntity>>>()
+        expectedNews.value = Result.Success(dummyNews)
 
-            Mockito.verify(newsRepository).getHeadlineNews()
-            Assert.assertNotNull(actualNews)
-        } finally {
-            newsViewModel.getHeadlineNews().removeObserver(observer)
-        }
+        `when`(newsRepository.getHeadlineNews()).thenReturn(expectedNews)
+
+        val actualNews = newsViewModel.getHeadlineNews().getOrAwaitValue()
+        Mockito.verify(newsRepository).getHeadlineNews()
+        Assert.assertNotNull(actualNews)
+        Assert.assertTrue(actualNews is Result.Success)
+        Assert.assertEquals(dummyNews.size, (actualNews as Result.Success).data.size)
+    }
+
+    @Test
+    fun `when Network error should return error`() {
+        val headlineNews = MutableLiveData<Result<List<NewsEntity>>>()
+        headlineNews.value = Result.Error("Error")
+
+        `when`(newsRepository.getHeadlineNews()).thenReturn(headlineNews)
+        val actualNews = newsViewModel.getHeadlineNews().getOrAwaitValue()
+        Mockito.verify(newsRepository).getHeadlineNews()
+        Assert.assertNotNull(actualNews)
+        Assert.assertTrue(actualNews is Result.Error)
     }
 }
