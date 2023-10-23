@@ -77,4 +77,11 @@ dependencies {
 
     //desugaring
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.3"
+
+    //mock testing
+    testImplementation "org.mockito:mockito-core:5.2.0"
+    testImplementation "org.mockito:mockito-inline:5.2.0"
+
+    //special testing
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
 }
