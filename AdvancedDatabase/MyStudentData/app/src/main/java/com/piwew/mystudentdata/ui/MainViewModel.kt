@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.piwew.mystudentdata.database.Student
 import com.piwew.mystudentdata.database.StudentAndUniversity
+import com.piwew.mystudentdata.database.UniversityAndStudent
 import com.piwew.mystudentdata.repo.StudentRepository
 import kotlinx.coroutines.launch
 
@@ -18,6 +19,9 @@ class MainViewModel(private val studentRepository: StudentRepository) : ViewMode
     fun getAllStudent(): LiveData<List<Student>> = studentRepository.getAllStudent()
     fun getAllStudentAndUniversity(): LiveData<List<StudentAndUniversity>> =
         studentRepository.getAllStudentAndUniversity()
+
+    fun getAllUniversityAndStudent(): LiveData<List<UniversityAndStudent>> =
+        studentRepository.getAllUniversityAndStudent()
 
     private fun insertAllData() = viewModelScope.launch {
         studentRepository.insertAllData()
