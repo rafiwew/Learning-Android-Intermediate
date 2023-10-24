@@ -2,12 +2,14 @@ package com.piwew.mystudentdata.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.piwew.mystudentdata.MyApplication
 import com.piwew.mystudentdata.R
+import com.piwew.mystudentdata.adapter.StudentAndUniversityAdapter
 import com.piwew.mystudentdata.adapter.StudentListAdapter
 import com.piwew.mystudentdata.databinding.ActivityMainBinding
 
@@ -68,6 +70,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getStudentAndUniversity() {
+        val adapter = StudentAndUniversityAdapter()
+        binding.rvStudent.adapter = adapter
+        mainViewModel.getAllStudentAndUniversity().observe(this) {
+            adapter.submitList(it)
+            Log.d(TAG, "getStudentAndUniversity: $it")
+        }
 
     }
 
@@ -78,6 +86,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getStudentWithCourse() {
 
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 
 }

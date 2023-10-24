@@ -22,6 +22,7 @@ object InitialDataSource {
             Student(4, "Robert Cailliau", 2),
             Student(5, "Arthur Samuel", 3),
             Student(6, "JCR Licklider", 4),
+            Student(7, "Muhammad Rafi", 1),
         )
     }
 
