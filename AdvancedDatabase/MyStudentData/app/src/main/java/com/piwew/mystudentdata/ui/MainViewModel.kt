@@ -3,19 +3,13 @@ package com.piwew.mystudentdata.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.piwew.mystudentdata.database.Student
 import com.piwew.mystudentdata.database.StudentAndUniversity
 import com.piwew.mystudentdata.database.StudentWithCourse
 import com.piwew.mystudentdata.database.UniversityAndStudent
 import com.piwew.mystudentdata.repo.StudentRepository
-import kotlinx.coroutines.launch
 
 class MainViewModel(private val studentRepository: StudentRepository) : ViewModel() {
-
-    init {
-        insertAllData()
-    }
 
     fun getAllStudent(): LiveData<List<Student>> = studentRepository.getAllStudent()
 
@@ -28,9 +22,6 @@ class MainViewModel(private val studentRepository: StudentRepository) : ViewMode
     fun getAllStudentWithCourse(): LiveData<List<StudentWithCourse>> =
         studentRepository.getAllStudentWithCourse()
 
-    private fun insertAllData() = viewModelScope.launch {
-        studentRepository.insertAllData()
-    }
 }
 
 class ViewModelFactory(private val repository: StudentRepository) : ViewModelProvider.Factory {
