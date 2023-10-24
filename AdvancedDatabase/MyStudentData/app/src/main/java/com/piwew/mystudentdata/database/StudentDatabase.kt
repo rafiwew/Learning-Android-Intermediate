@@ -31,6 +31,8 @@ abstract class StudentDatabase : RoomDatabase() {
                         StudentDatabase::class.java, "student_database"
                     )
                         .fallbackToDestructiveMigration()
+                        .createFromAsset("student_database.db")
+                        /*
                         .addCallback(object : Callback() {
                             override fun onCreate(db: SupportSQLiteDatabase) {
                                 super.onCreate(db)
@@ -45,6 +47,7 @@ abstract class StudentDatabase : RoomDatabase() {
                                 }
                             }
                         })
+                        */
                         .build()
                 }
             }
