@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Student::class, University::class, Course::class],
+    entities = [Student::class, University::class, Course::class, CourseStudentCrossRef::class],
     version = 1,
     exportSchema = false
 )

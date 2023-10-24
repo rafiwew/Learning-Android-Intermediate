@@ -11,6 +11,7 @@ import com.piwew.mystudentdata.MyApplication
 import com.piwew.mystudentdata.R
 import com.piwew.mystudentdata.adapter.StudentAndUniversityAdapter
 import com.piwew.mystudentdata.adapter.StudentListAdapter
+import com.piwew.mystudentdata.adapter.StudentWithCourseAdapter
 import com.piwew.mystudentdata.adapter.UniversityAndStudentAdapter
 import com.piwew.mystudentdata.databinding.ActivityMainBinding
 
@@ -91,6 +92,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun getStudentWithCourse() {
+        val adapter = StudentWithCourseAdapter()
+        binding.rvStudent.adapter = adapter
+        mainViewModel.getAllStudentWithCourse().observe(this) {
+            adapter.submitList(it)
+            Log.d(TAG, "getStudentWithCourse: $it")
+        }
 
     }
 
