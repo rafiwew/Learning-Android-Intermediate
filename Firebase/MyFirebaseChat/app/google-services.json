@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "150593819781",
+    "project_id": "myfirebasechat-piwew",
+    "storage_bucket": "myfirebasechat-piwew.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150593819781:android:b117561a41d2cdf10805ec",
+        "android_client_info": {
+          "package_name": "com.piwew.myfirebasechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150593819781-bk48v3vdh0tk0kdo124nhicbgo0h00r0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWREcv1YfjmbZbR9Gsf7sJ0ssdwQaa-3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150593819781-bk48v3vdh0tk0kdo124nhicbgo0h00r0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyFirebaseChat</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="say_something">Say something…</string>
+    <string name="photo_profile">Photo Profile</string>
+    <string name="send_button">Send Message Button</string>
+</resources>
