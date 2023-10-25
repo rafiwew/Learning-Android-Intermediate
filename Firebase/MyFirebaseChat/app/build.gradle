@@ -52,4 +52,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.3.0'
     implementation 'com.firebaseui:firebase-ui-database:8.0.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    //firebase cloud messaging
+    implementation 'com.google.firebase:firebase-messaging:23.3.0'
 }
