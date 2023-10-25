@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "150593819781",
+    "firebase_url": "https://myfirebasechat-piwew-default-rtdb.firebaseio.com",
     "project_id": "myfirebasechat-piwew",
     "storage_bucket": "myfirebasechat-piwew.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "150593819781-9134dqgi4gcj7k63ftilq528vg5o59a7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piwew.myfirebasechat",
+            "certificate_hash": "d9b649eeb168c8b6a30b0f46dd657aa45f883a15"
+          }
+        },
         {
           "client_id": "150593819781-bk48v3vdh0tk0kdo124nhicbgo0h00r0.apps.googleusercontent.com",
           "client_type": 3
