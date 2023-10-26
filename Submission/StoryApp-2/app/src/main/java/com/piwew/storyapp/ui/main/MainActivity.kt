@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             is ResultState.Success -> {
-                                showViewModel(result.data.listStory)
+                                showListStories(result.data.listStory)
                                 showLoading(false)
                             }
 
@@ -120,18 +120,18 @@ class MainActivity : AppCompatActivity() {
 
         mAdapter.setOnItemClickCallback(object : ListStoriesAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
-                showSelectedUser(data)
+                showSelectedStory(data)
             }
         })
     }
 
-    private fun showSelectedUser(stories: ListStoryItem) {
+    private fun showSelectedStory(stories: ListStoryItem) {
         val intentToDetail = Intent(this@MainActivity, StoryDetailActivity::class.java)
         intentToDetail.putExtra("STORY_ID", stories.id)
         startActivity(intentToDetail)
     }
 
-    private fun showViewModel(storiesItem: List<ListStoryItem>) {
+    private fun showListStories(storiesItem: List<ListStoryItem>) {
         if (storiesItem.isNotEmpty()) {
             binding.rvStories.visibility = View.VISIBLE
             mAdapter.submitList(storiesItem)

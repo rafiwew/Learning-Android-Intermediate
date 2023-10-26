@@ -3,19 +3,22 @@ package com.piwew.storyapp.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.piwew.storyapp.data.repo.MapsRepository
 import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.repo.StoryRepository
 import com.piwew.storyapp.di.Injection
 import com.piwew.storyapp.ui.detail.StoryDetailViewModel
 import com.piwew.storyapp.ui.login.LoginViewModel
 import com.piwew.storyapp.ui.main.MainViewModel
+import com.piwew.storyapp.ui.maps.MapsViewModel
 import com.piwew.storyapp.ui.register.RegisterViewModel
 import com.piwew.storyapp.ui.story.AddStoryViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor(
     private val userRepository: UserRepository,
-    private val storyRepository: StoryRepository
+    private val storyRepository: StoryRepository,
+    private val mapsRepository: MapsRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -41,6 +44,10 @@ class ViewModelFactory private constructor(
                 AddStoryViewModel(storyRepository) as T
             }
 
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(mapsRepository) as T
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -52,7 +59,8 @@ class ViewModelFactory private constructor(
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
                     Injection.provideRepository(context),
-                    Injection.provideStoryRepository(context)
+                    Injection.provideStoryRepository(context),
+                    Injection.provideMapsRepository(context)
                 )
             }.also { instance = it }
     }

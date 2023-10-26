@@ -5,6 +5,7 @@ import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.api.retrofit.ApiConfig
 import com.piwew.storyapp.data.pref.UserPreference
 import com.piwew.storyapp.data.pref.dataStore
+import com.piwew.storyapp.data.repo.MapsRepository
 import com.piwew.storyapp.data.repo.StoryRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -20,5 +21,10 @@ object Injection {
     fun provideStoryRepository(context: Context): StoryRepository {
         val pref = UserPreference.getInstance(context.dataStore)
         return StoryRepository.getInstance(pref)
+    }
+
+    fun provideMapsRepository(context: Context): MapsRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        return MapsRepository.getInstance(pref)
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">DailySnaps</string>
+    <string name="app_name_maps">DailySnaps Maps</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="welcome">Welcome to DailySnaps!</string>
@@ -61,5 +62,9 @@
     <string name="minutes_ago">%d minutes ago</string>
     <string name="hours_ago">%d hours ago</string>
     <string name="invalid_date">Invalid Date</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+    <string name="empty_maps_story">There aren\'t any stories displayed on the maps</string>
 </resources>
