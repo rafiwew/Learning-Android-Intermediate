@@ -16,6 +16,8 @@ import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import com.piwew.storyapp.ui.WelcomeActivity
 import com.piwew.storyapp.ui.detail.StoryDetailActivity
+import com.piwew.storyapp.ui.main.adapter.ListStoriesAdapter
+import com.piwew.storyapp.ui.main.adapter.LoadingStateAdapter
 import com.piwew.storyapp.ui.maps.MapsActivity
 import com.piwew.storyapp.ui.story.AddStoryActivity
 
@@ -79,7 +81,13 @@ class MainActivity : AppCompatActivity() {
                 finish()
             } else {
                 viewModel.stories.observe(this) {
-                    getData()
+                    if (it != null) {
+                        getData()
+                        showLoading(false)
+                    } else {
+                        showLoading(true)
+                        showToast(getString(R.string.empty_story))
+                    }
                 }
             }
         }
@@ -111,13 +119,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getData() {
+        mAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter { mAdapter.retry() }
+        )
         viewModel.stories.observe(this) { data ->
             mAdapter.submitData(lifecycle, data)
-            binding.progressBar.visibility = View.GONE
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

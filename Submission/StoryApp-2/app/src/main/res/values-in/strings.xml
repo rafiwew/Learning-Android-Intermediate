@@ -67,4 +67,5 @@
     <string name="terrain_type">Medan</string>
     <string name="hybrid_type">Hibrida</string>
     <string name="empty_maps_story">Tidak ada cerita apa pun yang ditampilkan di peta</string>
+    <string name="retry">Coba lagi</string>
 </resources>

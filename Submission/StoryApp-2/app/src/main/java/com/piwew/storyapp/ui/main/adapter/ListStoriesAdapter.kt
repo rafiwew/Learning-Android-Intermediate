@@ -1,4 +1,4 @@
-package com.piwew.storyapp.ui.main
+package com.piwew.storyapp.ui.main.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
