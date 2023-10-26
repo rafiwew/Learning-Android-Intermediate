@@ -1,10 +1,17 @@
 package com.piwew.storyapp.data.repo
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.google.gson.Gson
 import com.piwew.storyapp.data.ResultState
+import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.data.api.response.StoryResponse
 import com.piwew.storyapp.data.api.retrofit.ApiConfig
+import com.piwew.storyapp.data.paging.StoryPagingSource
 import com.piwew.storyapp.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,18 +25,15 @@ import java.io.File
 class StoryRepository private constructor(
     private val userPreference: UserPreference
 ) {
-    fun getStories() = liveData {
-        emit(ResultState.Loading)
-        try {
-            val user = runBlocking { userPreference.getSession().first() }
-            val apiService = ApiConfig.getApiService(user.token)
-            val successGetStories = apiService.getStories()
-            emit(ResultState.Success(successGetStories))
-        } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, StoryResponse::class.java)
-            errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
-        }
+    fun getStoriesPaging(): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(userPreference)
+            }
+        ).liveData
     }
 
     fun detailStory(id: String) = liveData {

@@ -3,7 +3,7 @@ package com.piwew.storyapp.ui.main
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,10 +18,10 @@ import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
-class ListStoriesAdapter(private val context: Context) :
-    ListAdapter<ListStoryItem, ListStoriesAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
-    private lateinit var onItemClickCallback: OnItemClickCallback
+class ListStoriesAdapter(
+    private val context: Context,
+    private var onItemClickCallback: OnItemClickCallback? = null
+) : PagingDataAdapter<ListStoryItem, ListStoriesAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
@@ -31,8 +31,10 @@ class ListStoriesAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val stories = getItem(position)
-        holder.bind(stories, context)
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(getItem(position)) }
+        if (stories != null) {
+            holder.bind(stories, context)
+            holder.itemView.setOnClickListener { onItemClickCallback?.onItemClicked(stories) }
+        }
     }
 
     class MyViewHolder(private val binding: ItemRowStoriesBinding) :
@@ -80,7 +82,8 @@ class ListStoriesAdapter(private val context: Context) :
                         if (diffInHours < 24) {
                             return context.getString(R.string.hours_ago, diffInHours)
                         } else {
-                            val outputDate = SimpleDateFormat("d MMMM yyyy, HH:mm:ss", Locale.getDefault())
+                            val outputDate =
+                                SimpleDateFormat("d MMMM yyyy, HH:mm:ss", Locale.getDefault())
                             return outputDate.format(dateIndonesia)
                         }
                     }
@@ -99,7 +102,7 @@ class ListStoriesAdapter(private val context: Context) :
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: ListStoryItem)
+        fun onItemClicked(data: ListStoryItem?)
     }
 
     companion object {

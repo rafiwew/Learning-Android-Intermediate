@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.piwew.storyapp.R
-import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
@@ -71,12 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabAddStory.setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    AddStoryActivity::class.java
-                )
-            )
+            startActivity(Intent(this, AddStoryActivity::class.java))
         }
 
         viewModel.getSession().observe(this) { user ->
@@ -84,29 +78,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             } else {
-                viewModel.getStories().observe(this) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultState.Loading -> {
-                                showLoading(true)
-                            }
-
-                            is ResultState.Success -> {
-                                showListStories(result.data.listStory)
-                                showLoading(false)
-                            }
-
-                            is ResultState.Error -> {
-                                showToast(result.error)
-                                showLoading(false)
-                            }
-                        }
-                    } else {
-                        showToast(getString(R.string.empty_story))
-                    }
+                viewModel.stories.observe(this) {
+                    getData()
                 }
             }
         }
+
         showRecyclerView()
     }
 
@@ -119,8 +96,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         mAdapter.setOnItemClickCallback(object : ListStoriesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ListStoryItem) {
-                showSelectedStory(data)
+            override fun onItemClicked(data: ListStoryItem?) {
+                if (data != null) {
+                    showSelectedStory(data)
+                }
             }
         })
     }
@@ -131,17 +110,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intentToDetail)
     }
 
-    private fun showListStories(storiesItem: List<ListStoryItem>) {
-        if (storiesItem.isNotEmpty()) {
-            binding.rvStories.visibility = View.VISIBLE
-            mAdapter.submitList(storiesItem)
-        } else {
-            binding.rvStories.visibility = View.INVISIBLE
+    private fun getData() {
+        viewModel.stories.observe(this) { data ->
+            mAdapter.submitData(lifecycle, data)
+            binding.progressBar.visibility = View.GONE
         }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showToast(message: String) {

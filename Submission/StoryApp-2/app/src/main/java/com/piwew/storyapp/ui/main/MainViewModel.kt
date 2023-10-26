@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.pref.UserModel
 import com.piwew.storyapp.data.repo.StoryRepository
@@ -11,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val userRepository: UserRepository,
-    private val storyRepository: StoryRepository
+    storyRepository: StoryRepository
 ) : ViewModel() {
 
     fun getSession(): LiveData<UserModel> {
@@ -24,6 +27,6 @@ class MainViewModel(
         }
     }
 
-    fun getStories() = storyRepository.getStories()
-
+    val stories: LiveData<PagingData<ListStoryItem>> =
+        storyRepository.getStoriesPaging().cachedIn(viewModelScope)
 }
