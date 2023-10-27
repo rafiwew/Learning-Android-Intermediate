@@ -40,6 +40,10 @@ android {
         viewBinding true
         buildConfig true
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -84,4 +88,10 @@ dependencies {
     // Paging 3 Integration
     def room_version = "2.6.0"
     implementation "androidx.room:room-paging:$room_version"
+
+    // Unit testing
+    testImplementation("androidx.arch.core:core-testing:2.2.0") // InstantTaskExecutorRule
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1") //TestDispatcher
+    testImplementation("org.mockito:mockito-core:5.2.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 }
