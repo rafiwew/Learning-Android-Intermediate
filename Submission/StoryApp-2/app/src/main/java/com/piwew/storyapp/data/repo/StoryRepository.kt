@@ -55,7 +55,12 @@ class StoryRepository private constructor(
         }
     }
 
-    fun uploadStory(imageFile: File, description: String) = liveData {
+    fun uploadStory(
+        imageFile: File,
+        description: String,
+        lat: Double? = null,
+        lon: Double? = null
+    ) = liveData {
         emit(ResultState.Loading)
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -67,7 +72,7 @@ class StoryRepository private constructor(
         try {
             val user = runBlocking { userPreference.getSession().first() }
             val apiService = ApiConfig.getApiService(user.token)
-            val successUploadStory = apiService.uploadStory(multipartBody, requestBody)
+            val successUploadStory = apiService.uploadStory(multipartBody, requestBody, lat, lon)
             emit(ResultState.Success(successUploadStory))
         } catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()

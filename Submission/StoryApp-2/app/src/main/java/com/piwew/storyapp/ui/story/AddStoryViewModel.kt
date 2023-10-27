@@ -8,6 +8,6 @@ class AddStoryViewModel(
     private val storyRepository: StoryRepository
 ) : ViewModel() {
 
-    fun uploadStory(file: File, description: String) =
-        storyRepository.uploadStory(file, description)
+    fun uploadStory(file: File, description: String, lat: Double? = null, lon: Double? = null) =
+        storyRepository.uploadStory(file, description, lat, lon)
 }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.piwew.storyapp.R
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.databinding.ActivityAddStoryBinding
@@ -38,22 +41,7 @@ class AddStoryActivity : AppCompatActivity() {
 
     private var currentImageUri: Uri? = null
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                showToast(getString(R.string.granted), Toast.LENGTH_LONG)
-            } else {
-                showToast(getString(R.string.denied), Toast.LENGTH_LONG)
-            }
-        }
-
-    private fun allPermissionsGranted() =
-        ContextCompat.checkSelfPermission(
-            this,
-            REQUIRED_PERMISSION
-        ) == PackageManager.PERMISSION_GRANTED
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,18 +49,127 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!allPermissionsGranted()) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        if (!checkPermission(CAMERA_REQUIRED_PERMISSION)) {
+            requestPermissionLauncher.launch(arrayOf(CAMERA_REQUIRED_PERMISSION))
         }
 
-        binding.ivActionBack.setOnClickListener {
-            onSupportNavigateUp()
+        binding.checkboxLocation.setOnClickListener {
+            if (!checkPermission(FINE_LOCATION_REQUIRED_PERMISSION) &&
+                !checkPermission(COARSE_LOCATION_REQUIRED_PERMISSION)
+            ) {
+                requestPermissionLauncher.launch(
+                    arrayOf(
+                        FINE_LOCATION_REQUIRED_PERMISSION,
+                        COARSE_LOCATION_REQUIRED_PERMISSION
+                    )
+                )
+            }
         }
 
+        binding.ivActionBack.setOnClickListener { onSupportNavigateUp() }
         binding.galleryButton.setOnClickListener { startGalleryOrOpenDocument() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.buttonAdd.setOnClickListener { uploadImage() }
+        binding.buttonAdd.setOnClickListener {
+            if (binding.checkboxLocation.isChecked) {
+                getMyLastLocation { lat, lon ->
+                    uploadImage(lat, lon)
+                }
+            } else {
+                uploadImage()
+            }
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+            }
+        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLastLocation(latLng: (Double?, Double?) -> Unit = { _, _ -> }) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if (checkPermission(FINE_LOCATION_REQUIRED_PERMISSION) &&
+            checkPermission(COARSE_LOCATION_REQUIRED_PERMISSION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val lat = location.latitude
+                    val lon = location.longitude
+                    latLng(lat, lon)
+                } else {
+                    showToast(getString(R.string.location_not_found), Toast.LENGTH_SHORT)
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    FINE_LOCATION_REQUIRED_PERMISSION,
+                    COARSE_LOCATION_REQUIRED_PERMISSION
+                )
+            )
+        }
+    }
+
+    private fun uploadImage(lat: Double? = null, lon: Double? = null) {
+        currentImageUri?.let { uri ->
+            val imageFile = uriToFile(uri, this).reduceFileImage()
+            val description = binding.edAddDescription.text.toString()
+
+            viewModel.uploadStory(imageFile, description, lat, lon)
+                .observe(this) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> {
+                                showLoading(true)
+                            }
+
+                            is ResultState.Success -> {
+                                AlertDialog.Builder(this).apply {
+                                    setTitle(getString(R.string.success_title))
+                                    setMessage(result.data.message)
+                                    setPositiveButton(getString(R.string.close_title)) { _, _ ->
+                                        val intent =
+                                            Intent(
+                                                this@AddStoryActivity,
+                                                MainActivity::class.java
+                                            )
+                                        intent.flags =
+                                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                    create()
+                                    show()
+                                }
+                                showLoading(false)
+                            }
+
+                            is ResultState.Error -> {
+                                showToast(result.error, Toast.LENGTH_LONG)
+                                showLoading(false)
+                            }
+                        }
+                    }
+                }
+        } ?: showToast(getString(R.string.empty_image_warning), Toast.LENGTH_SHORT)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -157,47 +254,6 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
-        currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
-            val description = binding.edAddDescription.text.toString()
-
-            showLoading(true)
-
-            viewModel.uploadStory(imageFile, description).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is ResultState.Loading -> {
-                            showLoading(true)
-                        }
-
-                        is ResultState.Success -> {
-                            AlertDialog.Builder(this).apply {
-                                setTitle(getString(R.string.success_title))
-                                setMessage(result.data.message)
-                                setPositiveButton(getString(R.string.close_title)) { _, _ ->
-                                    val intent = Intent(this@AddStoryActivity, MainActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                    startActivity(intent)
-                                    finish()
-                                }
-                                create()
-                                show()
-                            }
-                            showLoading(false)
-                        }
-
-                        is ResultState.Error -> {
-                            showToast(result.error, Toast.LENGTH_LONG)
-                            showLoading(false)
-                        }
-                    }
-                }
-            }
-
-        } ?: showToast(getString(R.string.empty_image_warning), Toast.LENGTH_SHORT)
-    }
-
     private fun showImage() {
         currentImageUri?.let { uri ->
             binding.previewImageView.setImageURI(uri)
@@ -213,6 +269,10 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val CAMERA_REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val FINE_LOCATION_REQUIRED_PERMISSION =
+            Manifest.permission.ACCESS_FINE_LOCATION
+        private const val COARSE_LOCATION_REQUIRED_PERMISSION =
+            Manifest.permission.ACCESS_COARSE_LOCATION
     }
 }

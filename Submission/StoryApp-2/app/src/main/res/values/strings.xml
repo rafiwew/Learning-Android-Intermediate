@@ -68,4 +68,6 @@
     <string name="hybrid_type">Hybrid</string>
     <string name="empty_maps_story">There aren\'t any stories displayed on the maps</string>
     <string name="retry">Retry</string>
+    <string name="location">Enable location</string>
+    <string name="location_not_found">Location is not found. Please try again</string>
 </resources>
