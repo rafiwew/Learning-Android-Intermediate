@@ -3,6 +3,7 @@ package com.piwew.storyapp.data.api.retrofit
 import com.piwew.storyapp.data.api.response.LoginResponse
 import com.piwew.storyapp.data.api.response.RegisterResponse
 import com.piwew.storyapp.data.api.response.StoryResponse
+import com.piwew.storyapp.data.database.entities.StoryEntity
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.piwew.storyapp.R
-import com.piwew.storyapp.data.api.response.ListStoryItem
+import com.piwew.storyapp.data.database.entities.StoryEntity
 import com.piwew.storyapp.databinding.ActivityMainBinding
 import com.piwew.storyapp.ui.ViewModelFactory
 import com.piwew.storyapp.ui.WelcomeActivity
@@ -39,6 +39,24 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        setUpRecyclerView()
+        setMenuItemClickListener()
+        onAddStoryButtonClick()
+        checkUserLoginAndRedirect()
+    }
+
+    private fun checkUserLoginAndRedirect() {
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+            } else {
+                getData()
+            }
+        }
+    }
+
+    private fun setMenuItemClickListener() {
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_logout -> {
@@ -70,32 +88,15 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
 
+    private fun onAddStoryButtonClick() {
         binding.fabAddStory.setOnClickListener {
             startActivity(Intent(this, AddStoryActivity::class.java))
         }
-
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            } else {
-                viewModel.stories.observe(this) {
-                    if (it != null) {
-                        getData()
-                        showLoading(false)
-                    } else {
-                        showLoading(true)
-                        showToast(getString(R.string.empty_story))
-                    }
-                }
-            }
-        }
-
-        showRecyclerView()
     }
 
-    private fun showRecyclerView() {
+    private fun setUpRecyclerView() {
         val mLayoutManager = LinearLayoutManager(this)
         binding.rvStories.apply {
             layoutManager = mLayoutManager
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mAdapter.setOnItemClickCallback(object : ListStoriesAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ListStoryItem?) {
+            override fun onItemClicked(data: StoryEntity?) {
                 if (data != null) {
                     showSelectedStory(data)
                 }
@@ -112,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showSelectedStory(stories: ListStoryItem) {
+    private fun showSelectedStory(stories: StoryEntity) {
         val intentToDetail = Intent(this@MainActivity, StoryDetailActivity::class.java)
         intentToDetail.putExtra("STORY_ID", stories.id)
         startActivity(intentToDetail)
@@ -123,7 +124,13 @@ class MainActivity : AppCompatActivity() {
             footer = LoadingStateAdapter { mAdapter.retry() }
         )
         viewModel.stories.observe(this) { data ->
-            mAdapter.submitData(lifecycle, data)
+            if (data != null) {
+                mAdapter.submitData(lifecycle, data)
+                showLoading(false)
+            } else {
+                showLoading(true)
+                showToast(getString(R.string.empty_story))
+            }
         }
     }
 

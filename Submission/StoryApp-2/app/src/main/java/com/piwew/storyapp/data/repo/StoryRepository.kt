@@ -2,16 +2,18 @@ package com.piwew.storyapp.data.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.google.gson.Gson
 import com.piwew.storyapp.data.ResultState
-import com.piwew.storyapp.data.api.response.ListStoryItem
 import com.piwew.storyapp.data.api.response.StoryResponse
 import com.piwew.storyapp.data.api.retrofit.ApiConfig
-import com.piwew.storyapp.data.paging.StoryPagingSource
+import com.piwew.storyapp.data.database.StoryDatabase
+import com.piwew.storyapp.data.database.entities.StoryEntity
+import com.piwew.storyapp.data.paging.StoryRemoteMediator
 import com.piwew.storyapp.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -23,15 +25,18 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository private constructor(
-    private val userPreference: UserPreference
+    private val userPreference: UserPreference,
+    private val storyDatabase: StoryDatabase,
 ) {
-    fun getStoriesPaging(): LiveData<PagingData<ListStoryItem>> {
+    fun getStoriesPaging(): LiveData<PagingData<StoryEntity>> {
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(userPreference, storyDatabase),
             pagingSourceFactory = {
-                StoryPagingSource(userPreference)
+                storyDatabase.storyDao().getAllStories()
             }
         ).liveData
     }
@@ -75,10 +80,11 @@ class StoryRepository private constructor(
         @Volatile
         private var instance: StoryRepository? = null
         fun getInstance(
-            userPreference: UserPreference
+            userPreference: UserPreference,
+            storyDatabase: StoryDatabase
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(userPreference)
+                instance ?: StoryRepository(userPreference, storyDatabase)
             }.also { instance = it }
     }
 }

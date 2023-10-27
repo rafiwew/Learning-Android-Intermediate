@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.piwew.storyapp.data.api.response.ListStoryItem
+import com.piwew.storyapp.data.database.entities.StoryEntity
 import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.pref.UserModel
 import com.piwew.storyapp.data.repo.StoryRepository
@@ -27,6 +27,6 @@ class MainViewModel(
         }
     }
 
-    val stories: LiveData<PagingData<ListStoryItem>> =
+    val stories: LiveData<PagingData<StoryEntity>> =
         storyRepository.getStoriesPaging().cachedIn(viewModelScope)
 }

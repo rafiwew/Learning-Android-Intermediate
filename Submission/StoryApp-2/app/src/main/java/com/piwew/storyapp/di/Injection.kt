@@ -3,6 +3,7 @@ package com.piwew.storyapp.di
 import android.content.Context
 import com.piwew.storyapp.data.repo.UserRepository
 import com.piwew.storyapp.data.api.retrofit.ApiConfig
+import com.piwew.storyapp.data.database.StoryDatabase
 import com.piwew.storyapp.data.pref.UserPreference
 import com.piwew.storyapp.data.pref.dataStore
 import com.piwew.storyapp.data.repo.MapsRepository
@@ -20,7 +21,8 @@ object Injection {
 
     fun provideStoryRepository(context: Context): StoryRepository {
         val pref = UserPreference.getInstance(context.dataStore)
-        return StoryRepository.getInstance(pref)
+        val storyDatabase = StoryDatabase.getDatabase(context)
+        return StoryRepository.getInstance(pref, storyDatabase)
     }
 
     fun provideMapsRepository(context: Context): MapsRepository {
