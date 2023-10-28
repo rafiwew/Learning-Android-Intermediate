@@ -70,4 +70,8 @@
     <string name="retry">Coba lagi</string>
     <string name="location">Aktifkan lokasi</string>
     <string name="location_not_found">Lokasi tidak ditemukan. Silakan coba lagi</string>
+    <string name="appwidget_text">DailySnaps Widget</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Widget dari DailySnaps untuk melihat cerita tanpa membuka aplikasi</string>
+    <string name="empty_widget">Tidak ada cerita</string>
 </resources>

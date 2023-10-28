@@ -70,4 +70,8 @@
     <string name="retry">Retry</string>
     <string name="location">Enable location</string>
     <string name="location_not_found">Location is not found. Please try again</string>
+    <string name="appwidget_text">DailySnaps Widget</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Widget from DailySnaps to view stories without opening the application</string>
+    <string name="empty_widget">Empty stories</string>
 </resources>
