@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
 import com.piwew.storyapp.R
 import com.piwew.storyapp.data.database.entities.StoryEntity
 import com.piwew.storyapp.databinding.ItemRowStoriesBinding
+import com.piwew.storyapp.helper.loadImage
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -24,8 +23,7 @@ class ListStoriesAdapter(
 ) : PagingDataAdapter<StoryEntity, ListStoriesAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding =
-            ItemRowStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemRowStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -42,14 +40,8 @@ class ListStoriesAdapter(
         fun bind(stories: StoryEntity, context: Context) {
             binding.tvItemName.text = stories.name
             binding.tvItemDescription.text = stories.description
-            val formattedTime = formatRelativeTime(stories.createdAt, context)
-            binding.tvItemDate.text = formattedTime
-            Glide.with(itemView.context)
-                .load(stories.photoUrl)
-                .fitCenter()
-                .override(Target.SIZE_ORIGINAL)
-                .skipMemoryCache(true)
-                .into(binding.ivItemPhoto)
+            binding.tvItemDate.text = formatRelativeTime(stories.createdAt, context)
+            binding.ivItemPhoto.loadImage(stories.photoUrl)
         }
 
         private fun formatRelativeTime(iso8601DateTime: String, context: Context): String {

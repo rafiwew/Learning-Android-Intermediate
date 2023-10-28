@@ -6,7 +6,6 @@ plugins {
 }
 
 def DICODING_STORY = '"' + DicodingStory + '"' ?: '" ' + DicodingStory + '"'
-def MOCK_WEB_SERVER = '"' + MockWebServer + '"' ?: '" ' + MockWebServer + '"'
 
 android {
     namespace 'com.piwew.storyapp'
@@ -21,7 +20,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "DicodingStory", DICODING_STORY)
-        buildConfigField("String", "MockWebServer", MOCK_WEB_SERVER)
     }
 
     buildTypes {
@@ -82,8 +80,8 @@ dependencies {
     implementation 'androidx.exifinterface:exifinterface:1.3.6'
 
     // Room database
-    implementation 'androidx.room:room-ktx:2.5.2'
-    ksp 'androidx.room:room-compiler:2.5.2'
+    implementation 'androidx.room:room-ktx:2.6.0'
+    ksp 'androidx.room:room-compiler:2.6.0'
 
     // Google Play Service Location
     implementation 'com.google.android.gms:play-services-maps:18.2.0'

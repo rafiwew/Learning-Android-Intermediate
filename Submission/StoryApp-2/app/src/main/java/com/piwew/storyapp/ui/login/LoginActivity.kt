@@ -32,16 +32,12 @@ class LoginActivity : AppCompatActivity() {
         with(binding) {
             btnLogin.setOnClickListener {
                 when {
-                    binding.edLoginEmail.text.toString().isEmpty() -> {
-                        binding.edLoginEmail.error = getString(R.string.error_empty_field)
+                    edLoginEmail.text.toString().isEmpty() -> {
+                        edLoginEmail.error = getString(R.string.error_empty_field)
                     }
 
-                    binding.edLoginPassword.text.toString().isEmpty() -> {
-                        binding.edLoginPassword.error = getString(R.string.error_empty_field)
-                    }
-
-                    binding.edLoginPassword.text.toString().length < 8 -> {
-                        binding.edLoginPassword.error = getString(R.string.error_short_password)
+                    edLoginPassword.text.toString().length < 8 -> {
+                        edLoginPassword.error = getString(R.string.error_short_password)
                     }
 
                     else -> login()

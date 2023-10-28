@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_register"
         tools:alpha="100">
 
-        <com.piwew.storyapp.ui.customview.EmailEditText
+        <EditText
             android:id="@+id/ed_register_name"
             style="@style/EditText.Username"
             android:layout_width="match_parent"
@@ -138,6 +138,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:alpha="0"
+        android:fontFamily="@font/montserrat_bold"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
@@ -152,8 +153,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:textSize="14sp"
         android:text="@string/sign_in"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -163,6 +164,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/redHigh"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/redHigh"
         android:progressTint="@color/redHigh"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

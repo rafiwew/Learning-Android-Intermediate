@@ -95,7 +95,7 @@
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
 
-    <style name="Button.Login"></style>
+    <style name="Button.Login"/>
 
     <style name="Button.Start">
         <item name="android:text">Get Started</item>

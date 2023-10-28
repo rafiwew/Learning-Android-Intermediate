@@ -52,6 +52,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.ivActionBack.setOnClickListener { onSupportNavigateUp() }
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.normal_type -> {
@@ -213,7 +215,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showStoryDetailsFromTheMarker(id: String) {
         val intentToDetail = Intent(this, StoryDetailActivity::class.java)
-        intentToDetail.putExtra("STORY_ID", id)
+        intentToDetail.putExtra(STORY_ID, id)
         startActivity(intentToDetail)
     }
 
@@ -221,8 +223,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
     companion object {
         private const val TAG = "MapsActivity"
         private const val TAG_BITMAP_HELPER = "BitmapHelper"
+        const val STORY_ID = "STORY_ID"
     }
 }

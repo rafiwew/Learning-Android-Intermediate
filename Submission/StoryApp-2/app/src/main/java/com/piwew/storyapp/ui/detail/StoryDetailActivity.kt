@@ -3,16 +3,15 @@ package com.piwew.storyapp.ui.detail
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.piwew.storyapp.R
 import com.piwew.storyapp.data.ResultState
 import com.piwew.storyapp.data.api.response.Story
 import com.piwew.storyapp.databinding.ActivityStoryDetailBinding
+import com.piwew.storyapp.helper.loadImage
 import com.piwew.storyapp.ui.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,9 +32,7 @@ class StoryDetailActivity : AppCompatActivity() {
         binding = ActivityStoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.ivActionBack.setOnClickListener {
-            onSupportNavigateUp()
-        }
+        binding.ivActionBack.setOnClickListener { onSupportNavigateUp() }
 
         storyId = intent.getStringExtra(STORY_ID).toString()
         viewModel.detailStory(storyId).observe(this) { result ->
@@ -97,14 +94,6 @@ class StoryDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "There is an error: ${e.message}", Toast.LENGTH_SHORT).show()
             "Invalid Date"
         }
-    }
-
-    private fun ImageView.loadImage(url: String) {
-        Glide.with(this.context)
-            .load(url)
-            .fitCenter()
-            .skipMemoryCache(true)
-            .into(this)
     }
 
     private fun showLoading(isLoading: Boolean) {

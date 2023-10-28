@@ -30,20 +30,16 @@ class RegisterActivity : AppCompatActivity() {
         with(binding) {
             btnRegister.setOnClickListener {
                 when {
-                    binding.edRegisterName.text.toString().isEmpty() -> {
-                        binding.edRegisterName.error = getString(R.string.error_empty_field)
+                    edRegisterName.text.toString().isEmpty() -> {
+                        edRegisterName.error = getString(R.string.error_empty_field)
                     }
 
-                    binding.edRegisterEmail.text.toString().isEmpty() -> {
-                        binding.edRegisterEmail.error = getString(R.string.error_empty_field)
+                    edRegisterEmail.text.toString().isEmpty() -> {
+                        edRegisterEmail.error = getString(R.string.error_empty_field)
                     }
 
-                    binding.edRegisterPassword.text.toString().isEmpty() -> {
-                        binding.edRegisterPassword.error = getString(R.string.error_empty_field)
-                    }
-
-                    binding.edRegisterPassword.text.toString().length < 8 -> {
-                        binding.edRegisterPassword.error = getString(R.string.error_short_password)
+                    edRegisterPassword.text.toString().length < 8 -> {
+                        edRegisterPassword.error = getString(R.string.error_short_password)
                     }
 
                     else -> register()

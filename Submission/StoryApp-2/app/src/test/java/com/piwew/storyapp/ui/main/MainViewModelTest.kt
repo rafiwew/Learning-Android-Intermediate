@@ -48,8 +48,8 @@ class MainViewModelTest {
         val data: PagingData<StoryEntity> = StoryPagingSource.snapshot(dummyStory)
         val expectedStory = MutableLiveData<PagingData<StoryEntity>>()
         expectedStory.value = data
-
         Mockito.`when`(storyRepository.getStoriesPaging()).thenReturn(expectedStory)
+
         val mainViewModel = MainViewModel(userRepository, storyRepository)
         val actualStory: PagingData<StoryEntity> = mainViewModel.stories.getOrAwaitValue()
 

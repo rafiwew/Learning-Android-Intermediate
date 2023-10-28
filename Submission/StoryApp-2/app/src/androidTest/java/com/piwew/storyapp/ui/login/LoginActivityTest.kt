@@ -58,7 +58,7 @@ class LoginActivityTest {
         onView(withId(R.id.ed_login_email)).check(matches(isDisplayed()))
         onView(withId(R.id.ed_login_password)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.ed_login_email)).perform(typeText("gam@gmail.com"), closeSoftKeyboard())
+        onView(withId(R.id.ed_login_email)).perform(typeText("mochrafi01@gmail.com"), closeSoftKeyboard())
         onView(withId(R.id.ed_login_password)).perform(typeText("12345678"), closeSoftKeyboard())
 
         onView(withId(R.id.btn_login)).check(matches(isDisplayed()))
@@ -87,7 +87,7 @@ class LoginActivityTest {
         onView(withId(R.id.ed_login_email)).perform(typeText("rafi"), closeSoftKeyboard())
         val invalidEmailMessage = InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.invalid_email)
         onView(withId(R.id.ed_login_email)).check(matches(hasErrorText(invalidEmailMessage)))
-        onView(withId(R.id.ed_login_email)).perform(typeText("rafi@gmail.com"), closeSoftKeyboard())
+        onView(withId(R.id.ed_login_email)).perform(typeText("mochrafi01@gmail.com"), closeSoftKeyboard())
 
         onView(withId(R.id.ed_login_password)).perform(typeText("1234567"), closeSoftKeyboard())
         val invalidPasswordMessage = InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.error_short_password)
@@ -115,7 +115,7 @@ class LoginActivityTest {
         onView(withId(R.id.ed_login_email)).check(matches(isDisplayed()))
         onView(withId(R.id.ed_login_password)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.ed_login_email)).perform(typeText("gam@gmail.com"), closeSoftKeyboard())
+        onView(withId(R.id.ed_login_email)).perform(typeText("mochrafi01@gmail.com"), closeSoftKeyboard())
         onView(withId(R.id.ed_login_password)).perform(typeText("12345678"), closeSoftKeyboard())
 
         onView(withId(R.id.btn_login)).check(matches(isDisplayed()))

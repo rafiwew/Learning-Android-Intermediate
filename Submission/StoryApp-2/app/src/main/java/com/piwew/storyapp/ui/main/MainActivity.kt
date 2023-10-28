@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSelectedStory(stories: StoryEntity) {
         val intentToDetail = Intent(this@MainActivity, StoryDetailActivity::class.java)
-        intentToDetail.putExtra("STORY_ID", stories.id)
+        intentToDetail.putExtra(STORY_ID, stories.id)
         startActivity(intentToDetail)
     }
 
@@ -140,5 +140,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    companion object {
+        const val STORY_ID = "STORY_ID"
     }
 }
