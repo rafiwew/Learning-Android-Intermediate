@@ -6,6 +6,7 @@ plugins {
 }
 
 def DICODING_STORY = '"' + DicodingStory + '"' ?: '" ' + DicodingStory + '"'
+def MOCK_WEB_SERVER = '"' + MockWebServer + '"' ?: '" ' + MockWebServer + '"'
 
 android {
     namespace 'com.piwew.storyapp'
@@ -20,6 +21,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "DicodingStory", DICODING_STORY)
+        buildConfigField("String", "MockWebServer", MOCK_WEB_SERVER)
     }
 
     buildTypes {
@@ -56,7 +58,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 
+    // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
@@ -64,22 +68,18 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
     implementation 'androidx.activity:activity-ktx:1.8.0'
-
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
 
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.16.0'
     ksp 'com.github.bumptech.glide:ksp:4.16.0'
 
+    // Camera
     implementation 'androidx.camera:camera-camera2:1.3.0'
     implementation 'androidx.camera:camera-lifecycle:1.3.0'
     implementation 'androidx.camera:camera-view:1.3.0'
-
     implementation 'androidx.exifinterface:exifinterface:1.3.6'
-
-    implementation 'androidx.core:core-splashscreen:1.0.1'
-
-    implementation 'androidx.paging:paging-runtime-ktx:3.2.1'
 
     // Room database
     implementation 'androidx.room:room-ktx:2.5.2'
@@ -89,8 +89,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    // Paging 3 Integration
+    // Paging3
     def room_version = "2.6.0"
+    implementation 'androidx.paging:paging-runtime-ktx:3.2.1'
     implementation "androidx.room:room-paging:$room_version"
 
     // Unit testing
@@ -98,4 +99,10 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1") //TestDispatcher
     testImplementation("org.mockito:mockito-core:5.2.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
+
+    // Espresso test
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 }

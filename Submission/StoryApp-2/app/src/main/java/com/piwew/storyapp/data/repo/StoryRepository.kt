@@ -15,6 +15,7 @@ import com.piwew.storyapp.data.database.StoryDatabase
 import com.piwew.storyapp.data.database.entities.StoryEntity
 import com.piwew.storyapp.data.paging.StoryRemoteMediator
 import com.piwew.storyapp.data.pref.UserPreference
+import com.piwew.storyapp.helper.wrapEspressoIdlingResource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
@@ -30,15 +31,17 @@ class StoryRepository private constructor(
 ) {
     fun getStoriesPaging(): LiveData<PagingData<StoryEntity>> {
         @OptIn(ExperimentalPagingApi::class)
-        return Pager(
-            config = PagingConfig(
-                pageSize = 5
-            ),
-            remoteMediator = StoryRemoteMediator(userPreference, storyDatabase),
-            pagingSourceFactory = {
-                storyDatabase.storyDao().getAllStories()
-            }
-        ).liveData
+        wrapEspressoIdlingResource {
+            return Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                remoteMediator = StoryRemoteMediator(userPreference, storyDatabase),
+                pagingSourceFactory = {
+                    storyDatabase.storyDao().getAllStories()
+                }
+            ).liveData
+        }
     }
 
     fun detailStory(id: String) = liveData {
@@ -62,22 +65,25 @@ class StoryRepository private constructor(
         lon: Double? = null
     ) = liveData {
         emit(ResultState.Loading)
-        val requestBody = description.toRequestBody("text/plain".toMediaType())
-        val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-        val multipartBody = MultipartBody.Part.createFormData(
-            "photo",
-            imageFile.name,
-            requestImageFile
-        )
-        try {
-            val user = runBlocking { userPreference.getSession().first() }
-            val apiService = ApiConfig.getApiService(user.token)
-            val successUploadStory = apiService.uploadStory(multipartBody, requestBody, lat, lon)
-            emit(ResultState.Success(successUploadStory))
-        } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, StoryResponse::class.java)
-            errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
+        wrapEspressoIdlingResource {
+            val requestBody = description.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "photo",
+                imageFile.name,
+                requestImageFile
+            )
+            try {
+                val user = runBlocking { userPreference.getSession().first() }
+                val apiService = ApiConfig.getApiService(user.token)
+                val successUploadStory =
+                    apiService.uploadStory(multipartBody, requestBody, lat, lon)
+                emit(ResultState.Success(successUploadStory))
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, StoryResponse::class.java)
+                errorBody?.message?.let { ResultState.Error(it) }?.let { emit(it) }
+            }
         }
     }
 
